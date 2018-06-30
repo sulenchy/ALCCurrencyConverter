@@ -1,0 +1,91 @@
+<!Doctype <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Currency Converter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script>
+</head>
+<body>
+    
+
+      <div class="container">
+        <form>
+          <div class="row">
+            <div class="col-25">
+              <label for="fname">From Amount</label>
+            </div>
+            <div class="col-75">
+              <input type="text" id="fromAmount" name="fromAmount" placeholder="From Amount..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-25">
+              <label for="lname">From Unit</label>
+            </div>
+            <div class="col-75">
+              <select id="fromSelect" name="from">
+                  <option value="disabled"  selected>Choose from Unit</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-25">
+              <label for="country">To Unit</label>
+            </div>
+            <div class="col-75">
+              <select id="toSelect" name="to">
+                  <option value="disabled"  selected>Choose from Unit</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+              <div class="col-25">
+                <label for="fname">To Amount</label>
+              </div>
+              <div class="col-75">
+                <input type="text" disabled id="toAmount" name="toAmount" placeholder="To Amount..">
+              </div>
+            </div>
+          <div class="row">
+            <button type="button" onclick="myFunction()" class="btn">Try it</button>
+          </div>
+          
+        </form>
+      </div>
+      <script src="script.js">      
+      </script>
+      
+      <script>
+        myFunction = () => {
+          let toVar = document.getElementById("toSelect").value;
+          let fromVar = document.getElementById("fromSelect").value;
+          var request = new XMLHttpRequest();
+          request.open('GET', `https://free.currencyconverterapi.com/api/v5/convert?q=${fromVar}_${toVar}&compact=ultra`, true);
+          request.onload = function () {
+            // Begin accessing JSON data here
+            var data = JSON.parse(this.response);
+            if (request.status >= 200 && request.status < 400) {
+              console.log(data);
+              const frmVal = document.getElementById("fromAmount").value;
+              if (frmVal) {
+                document.getElementById("toAmount").value = data[`${fromVar}_${toVar}`] * frmVal;
+              }
+              else {
+                document.getElementById("toAmount").value = data[`${fromVar}_${toVar}`];
+              }
+            }
+            else {
+              console.log("Not working");
+            }
+          }
+
+          request.send();
+        }
+
+
+      </script>
+</body>
+</html>
